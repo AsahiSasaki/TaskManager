@@ -47,6 +47,11 @@
 			<version>3.0.3</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-core</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -54,6 +59,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.4.2</version>
+				<configuration>
+					<configurationFile>${project.basedir}/src/main/resources/generatorConfig.xml </configurationFile>
+					<overwrite>true</overwrite>
+					<includeAllDependencies>true</includeAllDependencies>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+    PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+    "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="tables" targetRuntime="MyBatis3">
+        <!--  MapperにMapperアノテーションを付与   -->
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
+        <!--  equalsおよびhashCodeを自動生成      -->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+
+        <jdbcConnection 
+            driverClass="org.h2.Driver"
+            connectionURL="jdbc:h2:~/test"
+            userId="sa"
+            password="sa">
+        </jdbcConnection>
+
+        <javaModelGenerator 
+            targetPackage="jp.co.software.excite.taskmanager.infrastructure.entity"
+            targetProject="src/main/java"/>
+        <sqlMapGenerator 
+            targetPackage="jp.co.software.excite.taskmanager.infrastructure.mapper"  
+            targetProject="src/main/resources"/>
+        <javaClientGenerator 
+            type="XMLMAPPER"
+            targetPackage="jp.co.software.excite.taskmanager.infrastructure.mapper"
+            targetProject="src/main/java"/>
+
+        <table tableName="TASK">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+    </context>
+</generatorConfiguration>
