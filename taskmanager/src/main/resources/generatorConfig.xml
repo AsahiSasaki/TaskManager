@@ -18,14 +18,14 @@
         </jdbcConnection>
 
         <javaModelGenerator 
-            targetPackage="jp.co.software.excite.taskmanager.infrastructure.entity"
+            targetPackage="com.excite.taskmanager.infrastructure.entity"
             targetProject="src/main/java"/>
         <sqlMapGenerator 
-            targetPackage="jp.co.software.excite.taskmanager.infrastructure.mapper"  
+            targetPackage="com.excite.taskmanager.infrastructure.mapper"  
             targetProject="src/main/resources"/>
         <javaClientGenerator 
             type="XMLMAPPER"
-            targetPackage="jp.co.software.excite.taskmanager.infrastructure.mapper"
+            targetPackage="com.excite.taskmanager.infrastructure.mapper"
             targetProject="src/main/java"/>
 
         <table tableName="TASK">
