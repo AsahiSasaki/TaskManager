@@ -1,16 +1,15 @@
 package com.excite.taskmanager.infrastructure.repository;
 
-import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.modelmapper.ModelMapper;
 import com.excite.taskmanager.domain.repository.TaskRepository;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.infrastructure.entity.Task;
 import com.excite.taskmanager.infrastructure.mapper.TaskMapper;
 
-
-public class taskRepositoryImpl implements TaskRepository{
+@Repository
+public class TaskRepositoryImpl implements TaskRepository{
 
     @Autowired
     private TaskMapper taskMapper;
@@ -18,7 +17,21 @@ public class taskRepositoryImpl implements TaskRepository{
     @Autowired
     private ModelMapper modelMapper;
 
+    @Override
+    public Object getTasksList() {
 
+        Object ret = taskMapper.selectByExample(null);
+        
+        return ret;
+    }
+
+    @Override
+    public TaskObject getTaskById(int id) {
+
+        TaskObject ret = modelMapper.map(taskMapper.selectByPrimaryKey(id), TaskObject.class);
+
+        return ret;
+    }
 
     @Override
     public int createTask(TaskObject data) {
@@ -39,10 +52,8 @@ public class taskRepositoryImpl implements TaskRepository{
     }
 
     @Override
-    public int deleteTask(int id) {
+    public void deleteTask(int id) {
 
-        int ret = taskMapper.deleteByPrimaryKey(id);
-
-        return ret;
+        taskMapper.deleteByPrimaryKey(id);
     }
 }

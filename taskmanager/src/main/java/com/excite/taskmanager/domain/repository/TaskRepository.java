@@ -1,12 +1,11 @@
 package com.excite.taskmanager.domain.repository;
 
-import java.util.List;
-
 import com.excite.taskmanager.domain.object.TaskObject;
 
 /**
  * インフラ層とのインタフェース
  */
+
 public interface TaskRepository {
 
     /**
@@ -14,7 +13,7 @@ public interface TaskRepository {
      *
      * @return タスク一覧
      */
-    public List<TaskObject> getTasksList();
+    public Object getTasksList();
 
     /**
      *タスク取得
@@ -46,5 +45,5 @@ public interface TaskRepository {
      * @param id 
      * @return 更新レコード数
      */
-    public int deleteTask(int id);
+    public void deleteTask(int id);
 }
