@@ -7,7 +7,7 @@ public class  TaskObject {
     /**
      * タスクID
      */
-    private int id;
+    private Integer id;
 
     /**
      * タスク名
@@ -23,7 +23,7 @@ public class  TaskObject {
      * ステータス
      * 未完了：0、完了：1
      */
-    private int status;
+    private Integer status;
 
     /**
      * 期限
