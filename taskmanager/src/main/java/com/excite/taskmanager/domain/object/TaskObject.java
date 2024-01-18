@@ -1,7 +1,9 @@
 package com.excite.taskmanager.domain.object;
 
 import java.util.Date;
+import lombok.Data;
 
+@Data
 public class  TaskObject {
     
     /**
