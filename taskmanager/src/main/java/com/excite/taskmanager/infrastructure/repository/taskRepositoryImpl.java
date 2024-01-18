@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+
 import com.excite.taskmanager.domain.repository.TaskRepository;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.infrastructure.entity.Task;
@@ -25,9 +27,8 @@ public class TaskRepositoryImpl implements TaskRepository{
     public List<TaskObject> getTasksList() {
 
         List<Task> ret = taskMapper.selectByExample(null);
-        List<TaskObject> tasksList = new ArrayList<TaskObject>();
-        ret.forEach(i -> tasksList.add(modelMapper.map(i, TaskObject.class)));
-        return tasksList;
+        
+        return modelMapper.map(ret, new TypeToken<List<TaskObject>>() {}.getType());
     }
 
     @Override

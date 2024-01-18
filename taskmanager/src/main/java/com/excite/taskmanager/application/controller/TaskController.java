@@ -1,5 +1,7 @@
 package com.excite.taskmanager.application.controller;
 
+import java.util.List;
+
 import org.modelmapper.internal.bytebuddy.asm.Advice.OffsetMapping.Target.ForArray.ReadWrite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,16 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    /**
+     * タスク一覧取得
+     *
+     * 
+     */
+    @GetMapping("taskmanager")
+    public ResponseEntity<List<TaskObject>> getTasksList() {
+        List<TaskObject> ret = taskService.getTasksList();
+        return ResponseEntity.ok(ret);
+    }
 
     /**
      * タスク取得
