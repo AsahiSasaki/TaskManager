@@ -6,6 +6,14 @@ GET http://localhost:8080/taskmanager/3
 ###
 GET http://localhost:8080/taskmanager
 
+###
+POST http://localhost:8080/taskmanager
+content-type: application/json
 
+{
+    "title":"shake",
+    "description":"私このまま",
+    "deadline":"2024-01-31"
+}
 
 

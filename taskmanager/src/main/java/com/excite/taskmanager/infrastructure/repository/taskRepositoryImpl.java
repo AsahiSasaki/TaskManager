@@ -3,7 +3,6 @@ package com.excite.taskmanager.infrastructure.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -43,7 +42,7 @@ public class TaskRepositoryImpl implements TaskRepository{
     public int createTask(TaskObject data) {
 
         var entity = modelMapper.map(data, Task.class);
-        int ret = taskMapper.insert(entity);
+        int ret = taskMapper.insertSelective(entity);
 
         return ret;
     }

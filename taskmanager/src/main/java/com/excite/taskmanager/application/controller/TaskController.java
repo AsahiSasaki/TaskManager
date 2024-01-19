@@ -2,17 +2,18 @@ package com.excite.taskmanager.application.controller;
 
 import java.util.List;
 
-import org.modelmapper.internal.bytebuddy.asm.Advice.OffsetMapping.Target.ForArray.ReadWrite;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.modelmapper.ModelMapper;
 
+import com.excite.taskmanager.application.resource.TaskBody;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
 
@@ -23,6 +24,9 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * タスク一覧取得
@@ -47,6 +51,17 @@ public class TaskController {
     }
 
     /**
+     * タスク作成
+     *
+     * @param id 
+     */
+    @PostMapping("taskmanager")
+    public void createTask(@RequestBody TaskBody taskBody) {
+        TaskObject reqTaskObject = modelMapper.map(taskBody, TaskObject.class);
+        taskService.createTask(reqTaskObject);
+    }
+
+    /**
      * タスク削除
      *
      * @param id 
@@ -55,5 +70,5 @@ public class TaskController {
     public void deleteTask(@PathVariable("id") Integer id) {
             taskService.deleteTask(id);
     }
-    
+
 }
