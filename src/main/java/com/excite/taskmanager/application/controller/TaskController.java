@@ -34,8 +34,8 @@ public class TaskController {
      * 
      */
     @GetMapping("tasks")
-    public ResponseEntity<List<TaskObject>> getTasksList() {
-        List<TaskObject> ret = taskService.getTasksList();
+    public ResponseEntity<List<TaskObject>> getTasks() {
+        List<TaskObject> ret = taskService.getTasks();
         return ResponseEntity.ok(ret);
     }
 
@@ -56,9 +56,10 @@ public class TaskController {
      * @param 
      */
     @PostMapping("tasks")
-    public void createTask(@RequestBody TaskPostBody taskPostBody) {
+    public ResponseEntity<Void> createTask(@RequestBody TaskPostBody taskPostBody) {
         TaskObject reqTaskObject = modelMapper.map(taskPostBody, TaskObject.class);
         taskService.createTask(reqTaskObject);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -67,10 +68,11 @@ public class TaskController {
      * @param 
      */
     @PutMapping("tasks/{id}")
-    public void updateTask(@PathVariable("id") Integer id, @RequestBody TaskPutBody taskPutBody) {
+    public ResponseEntity<Void> updateTask(@PathVariable("id") Integer id, @RequestBody TaskPutBody taskPutBody) {
         TaskObject reqTaskObject = modelMapper.map(taskPutBody, TaskObject.class);
         reqTaskObject.setId(id);
         taskService.updateTask(reqTaskObject);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -79,8 +81,9 @@ public class TaskController {
      * @param id 
      */
     @DeleteMapping("tasks/{id}")
-    public void deleteTask(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable("id") Integer id) {
             taskService.deleteTask(id);
+            return ResponseEntity.ok().build();
     }
 
 }
