@@ -18,7 +18,7 @@ public class TaskService {
      *
      */
     public List<TaskObject> getTasksList(){
-        return taskRepository.getTasksList();
+        return taskRepository.getTasks();
     }
 
     /**

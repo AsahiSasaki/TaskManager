@@ -15,7 +15,7 @@ public interface TaskRepository {
      *
      * @return タスク一覧
      */
-    public List<TaskObject> getTasksList();
+    public List<TaskObject> getTasks();
 
     /**
      *タスク取得

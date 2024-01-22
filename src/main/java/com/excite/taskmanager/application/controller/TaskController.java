@@ -10,17 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.modelmapper.ModelMapper;
 
-import com.excite.taskmanager.application.resource.TaskBody;
+import com.excite.taskmanager.application.resource.TaskPostBody;
+import com.excite.taskmanager.application.resource.TaskPutBody;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
 
 
 @RestController
-@RequestMapping("")
 public class TaskController {
 
     @Autowired
@@ -34,7 +33,7 @@ public class TaskController {
      *
      * 
      */
-    @GetMapping("taskmanager")
+    @GetMapping("tasks")
     public ResponseEntity<List<TaskObject>> getTasksList() {
         List<TaskObject> ret = taskService.getTasksList();
         return ResponseEntity.ok(ret);
@@ -45,7 +44,7 @@ public class TaskController {
      *
      * @param id 
      */
-    @GetMapping("taskmanager/{id}")
+    @GetMapping("tasks/{id}")
     public ResponseEntity<TaskObject> getTaskById(@PathVariable("id") Integer id) {
         TaskObject ret = taskService.getTaskById(id);
         return ResponseEntity.ok(ret);
@@ -56,9 +55,9 @@ public class TaskController {
      *
      * @param 
      */
-    @PostMapping("taskmanager")
-    public void createTask(@RequestBody TaskBody taskBody) {
-        TaskObject reqTaskObject = modelMapper.map(taskBody, TaskObject.class);
+    @PostMapping("tasks")
+    public void createTask(@RequestBody TaskPostBody taskPostBody) {
+        TaskObject reqTaskObject = modelMapper.map(taskPostBody, TaskObject.class);
         taskService.createTask(reqTaskObject);
     }
 
@@ -67,9 +66,10 @@ public class TaskController {
      *
      * @param 
      */
-    @PutMapping("taskmanager")
-    public void updateTask(@RequestBody TaskBody taskBody) {
-        TaskObject reqTaskObject = modelMapper.map(taskBody, TaskObject.class);
+    @PutMapping("tasks/{id}")
+    public void updateTask(@PathVariable("id") Integer id, @RequestBody TaskPutBody taskPutBody) {
+        TaskObject reqTaskObject = modelMapper.map(taskPutBody, TaskObject.class);
+        reqTaskObject.setId(id);
         taskService.updateTask(reqTaskObject);
     }
 
@@ -78,7 +78,7 @@ public class TaskController {
      *
      * @param id 
      */
-    @DeleteMapping("taskmanager/{id}")
+    @DeleteMapping("tasks/{id}")
     public void deleteTask(@PathVariable("id") Integer id) {
             taskService.deleteTask(id);
     }

@@ -23,7 +23,7 @@ public class TaskRepositoryImpl implements TaskRepository{
     private ModelMapper modelMapper;
 
     @Override
-    public List<TaskObject> getTasksList() {
+    public List<TaskObject> getTasks() {
 
         List<Task> ret = taskMapper.selectByExample(null);
         

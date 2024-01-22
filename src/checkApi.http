@@ -1,14 +1,14 @@
 ###
 // タスク一覧取得
-GET http://localhost:8080/taskmanager
+GET http://localhost:8080/tasks
 
 ###
 //タスク取得
-GET http://localhost:8080/taskmanager/3
+GET http://localhost:8080/tasks/3
 
 ###
 // タスク作成
-POST http://localhost:8080/taskmanager
+POST http://localhost:8080/tasks
 content-type: application/json
 
 {
@@ -19,11 +19,10 @@ content-type: application/json
 
 ###
 // タスク更新
-PUT http://localhost:8080/taskmanager
+PUT http://localhost:8080/tasks/4
 content-type: application/json
 
 {
-    "id":3,
     "title":"telecaster",
     "description":"タスク更新",
     "status":1,
@@ -32,5 +31,5 @@ content-type: application/json
 
 ###
 // タスク削除
-DELETE http://localhost:8080/taskmanager/2
+DELETE http://localhost:8080/tasks/2
 
