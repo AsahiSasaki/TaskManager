@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
 import com.excite.taskmanager.application.resource.TaskPostBody;
 import com.excite.taskmanager.application.resource.TaskPutBody;
+import com.excite.taskmanager.application.resource.TaskResponseBody;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
 
@@ -35,11 +37,15 @@ public class TaskController {
      * 
      */
     @GetMapping("tasks")
-    public ResponseEntity<List<TaskObject>> getTasks() {
+    public ResponseEntity<List<TaskResponseBody>> getTasks() {
         List<TaskObject> ret = taskService.getTasks();
+
+        List<TaskResponseBody> res = modelMapper.map(ret, new TypeToken<List<TaskResponseBody>>() {}.getType());
+        
         HttpHeaders headers = new HttpHeaders();
         headers.set("Access-Control-Allow-Origin", "http://localhost:5173");;
-        return ResponseEntity.ok().headers(headers).body(ret);
+        
+        return ResponseEntity.ok().headers(headers).body(res);
     }
 
     /**
@@ -48,11 +54,16 @@ public class TaskController {
      * @param id 
      */
     @GetMapping("tasks/{id}")
-    public ResponseEntity<TaskObject> getTaskById(@PathVariable("id") Integer id) {
+    public ResponseEntity<TaskResponseBody> getTaskById(@PathVariable("id") Integer id) {
+        
         TaskObject ret = taskService.getTaskById(id);
+
+        TaskResponseBody res = modelMapper.map(ret, TaskResponseBody.class);
+        
         HttpHeaders headers = new HttpHeaders();
         headers.set("Access-Control-Allow-Origin", "http://localhost:5173");
-        return ResponseEntity.ok().headers(headers).body(ret);
+        
+        return ResponseEntity.ok().headers(headers).body(res);
     }
 
     /**
