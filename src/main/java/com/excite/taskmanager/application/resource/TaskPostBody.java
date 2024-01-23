@@ -8,11 +8,6 @@ import lombok.Data;
 public class TaskPostBody {
 
     /**
-     *　ID
-     */
-    private Integer id;
-
-    /**
      * タスク名
      */
     private String title;
@@ -27,10 +22,5 @@ public class TaskPostBody {
      * 未完了：0、完了：1
      */
     private Integer status;
-
-    /**
-     * 期限
-     */
-    private Date deadline;
     
 }
