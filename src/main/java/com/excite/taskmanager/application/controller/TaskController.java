@@ -2,6 +2,7 @@ package com.excite.taskmanager.application.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +37,9 @@ public class TaskController {
     @GetMapping("tasks")
     public ResponseEntity<List<TaskObject>> getTasks() {
         List<TaskObject> ret = taskService.getTasks();
-        return ResponseEntity.ok(ret);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Access-Control-Allow-Origin", "http://localhost:5173");;
+        return ResponseEntity.ok().headers(headers).body(ret);
     }
 
     /**
@@ -47,7 +50,9 @@ public class TaskController {
     @GetMapping("tasks/{id}")
     public ResponseEntity<TaskObject> getTaskById(@PathVariable("id") Integer id) {
         TaskObject ret = taskService.getTaskById(id);
-        return ResponseEntity.ok(ret);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Access-Control-Allow-Origin", "http://localhost:5173");
+        return ResponseEntity.ok().headers(headers).body(ret);
     }
 
     /**
