@@ -2,9 +2,9 @@ package com.excite.taskmanager.application.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +23,7 @@ import com.excite.taskmanager.domain.service.TaskService;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class TaskController {
 
     @Autowired
@@ -33,8 +34,6 @@ public class TaskController {
 
     /**
      * タスク一覧取得
-     *
-     * 
      */
     @GetMapping("tasks")
     public ResponseEntity<List<TaskResponseBody>> getTasks() {
@@ -42,10 +41,7 @@ public class TaskController {
 
         List<TaskResponseBody> res = modelMapper.map(ret, new TypeToken<List<TaskResponseBody>>() {}.getType());
         
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Access-Control-Allow-Origin", "http://localhost:5173");;
-        
-        return ResponseEntity.ok().headers(headers).body(res);
+        return ResponseEntity.ok().body(res);
     }
 
     /**
@@ -60,10 +56,7 @@ public class TaskController {
 
         TaskResponseBody res = modelMapper.map(ret, TaskResponseBody.class);
         
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Access-Control-Allow-Origin", "http://localhost:5173");
-        
-        return ResponseEntity.ok().headers(headers).body(res);
+        return ResponseEntity.ok().body(res);
     }
 
     /**
