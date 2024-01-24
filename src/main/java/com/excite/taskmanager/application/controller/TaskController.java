@@ -2,9 +2,9 @@ package com.excite.taskmanager.application.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
 import com.excite.taskmanager.application.resource.TaskPostBody;
 import com.excite.taskmanager.application.resource.TaskPutBody;
+import com.excite.taskmanager.application.resource.TaskResponseBody;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class TaskController {
 
     @Autowired
@@ -31,15 +34,14 @@ public class TaskController {
 
     /**
      * タスク一覧取得
-     *
-     * 
      */
     @GetMapping("tasks")
-    public ResponseEntity<List<TaskObject>> getTasks() {
+    public ResponseEntity<List<TaskResponseBody>> getTasks() {
         List<TaskObject> ret = taskService.getTasks();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Access-Control-Allow-Origin", "http://localhost:5173");;
-        return ResponseEntity.ok().headers(headers).body(ret);
+
+        List<TaskResponseBody> res = modelMapper.map(ret, new TypeToken<List<TaskResponseBody>>() {}.getType());
+        
+        return ResponseEntity.ok().body(res);
     }
 
     /**
@@ -48,11 +50,13 @@ public class TaskController {
      * @param id 
      */
     @GetMapping("tasks/{id}")
-    public ResponseEntity<TaskObject> getTaskById(@PathVariable("id") Integer id) {
+    public ResponseEntity<TaskResponseBody> getTaskById(@PathVariable("id") Integer id) {
+        
         TaskObject ret = taskService.getTaskById(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Access-Control-Allow-Origin", "http://localhost:5173");
-        return ResponseEntity.ok().headers(headers).body(ret);
+
+        TaskResponseBody res = modelMapper.map(ret, TaskResponseBody.class);
+        
+        return ResponseEntity.ok().body(res);
     }
 
     /**

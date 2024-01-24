@@ -1,11 +1,16 @@
 package com.excite.taskmanager.application.resource;
 
-import java.util.Date;
+import java.sql.Date;
 
 import lombok.Data;
 
 @Data
-public class TaskPostBody {
+public class TaskResponseBody {
+
+    /**
+     *　ID
+     */
+    private Integer id;
 
     /**
      * タスク名
@@ -16,6 +21,12 @@ public class TaskPostBody {
      * タスク内容
      */
     private String description;
+
+    /**
+     * ステータス
+     * 未完了：0、完了：1
+     */
+    private Integer status;
 
     /**
      * 期限
