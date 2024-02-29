@@ -9,26 +9,26 @@ public class  TaskObject {
     /**
      * タスクID
      */
-    private Integer id;
+    public int id;
 
     /**
      * タスク名
      */
-    private String title;
+    public String title;
 
     /**
      * タスク内容
      */
-    private String description;
+    public String description;
 
     /**
      * ステータス
      * 未完了：0、完了：1
      */
-    private Integer status;
+    public int status;
 
     /**
      * 期限
      */
-    private Date deadline;
+    public Date deadline;
 }

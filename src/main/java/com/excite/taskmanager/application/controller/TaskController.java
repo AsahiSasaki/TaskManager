@@ -18,9 +18,10 @@ import org.modelmapper.TypeToken;
 import com.excite.taskmanager.application.resource.TaskPostBody;
 import com.excite.taskmanager.application.resource.TaskPutBody;
 import com.excite.taskmanager.application.resource.TaskResponseBody;
+import com.excite.taskmanager.domain.exception.TaskNotExistException;
+import com.excite.taskmanager.domain.exception.ValidationException;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
-
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -34,38 +35,42 @@ public class TaskController {
 
     /**
      * タスク一覧取得
+     * 
+     * @throws Exception
      */
     @GetMapping("tasks")
-    public ResponseEntity<List<TaskResponseBody>> getTasks() {
+    public ResponseEntity<List<TaskResponseBody>> getTasks() throws Exception {
         List<TaskObject> ret = taskService.getTasks();
 
-        List<TaskResponseBody> res = modelMapper.map(ret, new TypeToken<List<TaskResponseBody>>() {}.getType());
-        
+        List<TaskResponseBody> res = modelMapper.map(ret, new TypeToken<List<TaskResponseBody>>() {
+        }.getType());
+
         return ResponseEntity.ok().body(res);
     }
 
     /**
      * タスク取得
      *
-     * @param id 
+     * @param id
      */
     @GetMapping("tasks/{id}")
-    public ResponseEntity<TaskResponseBody> getTaskById(@PathVariable("id") Integer id) {
-        
+    public ResponseEntity<TaskResponseBody> getTaskById(@PathVariable("id") int id) throws TaskNotExistException {
         TaskObject ret = taskService.getTaskById(id);
-
+        if (ret == null) {
+            throw new TaskNotExistException(id);
+        }
         TaskResponseBody res = modelMapper.map(ret, TaskResponseBody.class);
-        
         return ResponseEntity.ok().body(res);
     }
 
     /**
      * タスク作成
      *
-     * @param 
+     * @param
+     * @throws ValidationException
      */
     @PostMapping("tasks")
-    public ResponseEntity<Void> createTask(@RequestBody TaskPostBody taskPostBody) {
+    public ResponseEntity<String> createTask(@RequestBody TaskPostBody taskPostBody) throws ValidationException {
         TaskObject reqTaskObject = modelMapper.map(taskPostBody, TaskObject.class);
         taskService.createTask(reqTaskObject);
         return ResponseEntity.ok().build();
@@ -74,25 +79,33 @@ public class TaskController {
     /**
      * タスク更新
      *
-     * @param 
+     * @param
      */
     @PutMapping("tasks/{id}")
-    public ResponseEntity<Void> updateTask(@PathVariable("id") Integer id, @RequestBody TaskPutBody taskPutBody) {
+    public ResponseEntity<Void> updateTask(@PathVariable("id") int id, @RequestBody TaskPutBody taskPutBody)
+            throws ValidationException, TaskNotExistException {
         TaskObject reqTaskObject = modelMapper.map(taskPutBody, TaskObject.class);
         reqTaskObject.setId(id);
-        taskService.updateTask(reqTaskObject);
+        int ret = taskService.updateTask(reqTaskObject);
+        if (ret == 0) {
+            throw new TaskNotExistException(id);
+        }
         return ResponseEntity.ok().build();
     }
 
     /**
      * タスク削除
      *
-     * @param id 
+     * @param id
+     * @throws TaskNotExistException
      */
     @DeleteMapping("tasks/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable("id") Integer id) {
-            taskService.deleteTask(id);
-            return ResponseEntity.ok().build();
+    public ResponseEntity<String> deleteTask(@PathVariable("id") int id) throws TaskNotExistException {
+        int ret = taskService.deleteTask(id);
+        if (ret == 0) {
+            throw new TaskNotExistException(id);
+        }
+        return ResponseEntity.ok().build();
     }
 
 }
