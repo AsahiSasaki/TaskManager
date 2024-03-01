@@ -4,7 +4,7 @@ GET http://localhost:8080/tasks
 
 ###
 //タスク取得
-GET http://localhost:8080/tasks/7
+GET http://localhost:8080/tasks/4
 
 ###
 // タスク作成
@@ -12,21 +12,21 @@ POST http://localhost:8080/tasks
 content-type: application/json
 
 {
-    "title":"天を仰げばそれさえ小さくて",
+    "title":"0123456789",
     "description":"すうぇい",
     "deadline":"2024-03-31"
 }
 
 ###
 // タスク更新
-PUT http://localhost:8080/tasks/9
+PUT http://localhost:8080/tasks/2
 content-type: application/json
 
 {
     "title":"telecaster",
     "description":"タスク更新",
     "status":1,
-    "deadline":"2024-01-31"
+    "deadline":"2024-03-31"
 }
 
 ###

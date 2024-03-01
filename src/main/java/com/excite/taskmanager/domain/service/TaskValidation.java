@@ -2,6 +2,7 @@ package com.excite.taskmanager.domain.service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import com.excite.taskmanager.domain.exception.ValidationException;
@@ -10,24 +11,34 @@ import com.excite.taskmanager.domain.object.TaskObject;
 public class TaskValidation {
 
     public static void validate(TaskObject data) throws ValidationException {
-        if (data.title == null || data.title.strip().isEmpty()) {
+        validateTitle(data.title);
+        validateDescription(data.description);
+        validateDeadline(data.deadline);
+    }
+
+    private static void validateTitle(String title) throws ValidationException {
+        if (title == null || title.strip().isEmpty()) {
             throw new ValidationException("タスク名は必須です");
         }
 
-        if (data.title.length() > 10) {
+        if (title.length() > 10) {
             throw new ValidationException("タスク名は10文字以下で入力してください");
         }
+    }
 
-        if (data.description != null && data.description.length() > 50) {
+    private static void validateDescription(String description) throws ValidationException {
+        if (description != null && description.length() > 50) {
             throw new ValidationException("タスク内容は50文字以下で入力してください");
         }
 
-        if (Pattern.compile("[\\x20-\\x7E]").matcher(data.description).find()) {
+        if (Pattern.compile("[\\x20-\\x7E]").matcher(description).find()) {
             throw new ValidationException("タスク内容に半角入力は許可されていません");
         }
+    }
 
-        if (data.deadline != null) {
-            LocalDate deadlineDate = data.deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    private static void validateDeadline(Date deadline) throws ValidationException {
+        if (deadline != null) {
+            LocalDate deadlineDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             LocalDate today = LocalDate.now();
 
             if (deadlineDate.isBefore(today)) {

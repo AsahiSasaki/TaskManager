@@ -40,9 +40,7 @@ public class TaskController {
      */
     @GetMapping("tasks")
     public ResponseEntity<List<TaskResponseBody>> getTasks() throws Exception {
-        List<TaskObject> ret = taskService.getTasks();
-
-        List<TaskResponseBody> res = modelMapper.map(ret, new TypeToken<List<TaskResponseBody>>() {
+        List<TaskResponseBody> res = modelMapper.map(taskService.getTasks(), new TypeToken<List<TaskResponseBody>>() {
         }.getType());
 
         return ResponseEntity.ok().body(res);
@@ -52,6 +50,7 @@ public class TaskController {
      * タスク取得
      *
      * @param id
+     * @throws TaskNotExistException
      */
     @GetMapping("tasks/{id}")
     public ResponseEntity<TaskResponseBody> getTaskById(@PathVariable("id") int id) throws TaskNotExistException {
@@ -80,6 +79,7 @@ public class TaskController {
      * タスク更新
      *
      * @param
+     * @throws ValidationException,TaskNotExistException
      */
     @PutMapping("tasks/{id}")
     public ResponseEntity<Void> updateTask(@PathVariable("id") int id, @RequestBody TaskPutBody taskPutBody)

@@ -8,7 +8,7 @@ import lombok.Data;
 public class TaskResponseBody {
 
     /**
-     *　ID
+     * ID
      */
     private int id;
 
@@ -33,9 +33,4 @@ public class TaskResponseBody {
      */
     private Date deadline;
 
-    /**
-     * 期限
-     */
-    private String errorMessage;
-    
 }
