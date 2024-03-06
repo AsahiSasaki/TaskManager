@@ -9,7 +9,7 @@ public class  TaskObject {
     /**
      * タスクID
      */
-    public int id;
+    private int id;
 
     /**
      * タスク名

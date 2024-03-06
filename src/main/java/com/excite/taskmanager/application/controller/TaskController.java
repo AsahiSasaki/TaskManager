@@ -24,7 +24,8 @@ import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class TaskController {
 
     @Autowired

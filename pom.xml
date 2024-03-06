@@ -21,7 +21,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -48,10 +47,6 @@
 			<version>3.0.3</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.mybatis.generator</groupId>
 			<artifactId>mybatis-generator-core</artifactId>
@@ -67,6 +62,37 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.20</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
  </dependencies>
 
 	<build>
@@ -85,6 +111,26 @@
 					<includeAllDependencies>true</includeAllDependencies>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.3.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/taskApi.yaml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <output>${project.basedir}/src/gen/java/main</output>
+                            <configOptions>
+                               <interfaceOnly>true</interfaceOnly>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 

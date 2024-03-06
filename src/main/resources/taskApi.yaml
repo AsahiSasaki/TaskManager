@@ -1,0 +1,131 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "TaskManager API"
+servers:
+  - url: http://localhost:8080
+paths:
+  /tasks:
+    get:
+      summary: タスク一覧取得
+      responses:
+        "200":
+          description: タスク一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TaskResponseBody"
+    post:
+      summary: タスク作成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskPostBody"
+        required: true
+      responses:
+        "200":
+          description: タスク作成成功
+        "400":
+          description: タスク作成失敗 BAD REQUEST
+  /tasks/{id}:
+    get:
+      summary: タスク取得
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: タスクID
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: タスク取得成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResponseBody"
+        "404":
+          description: タスク取得失敗 指定したIDのタスクが見つかりませんでした。
+    put:
+      summary: タスク更新
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: タスクID
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskPutBody"
+        required: true
+      responses:
+        "200":
+          description: タスク更新成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResponseBody"
+        "400":
+          description: タスク更新失敗 BAD REQUEST
+        "404":
+          description: タスク更新失敗 指定したIDのタスクが見つかりませんでした。
+    delete:
+      summary: タスク削除
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: タスクID
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: タスク削除成功
+        "404":
+          description: タスク削除失敗 指定したIDのタスクが見つかりませんでした。
+components:
+  schemas:
+    TaskResponseBody:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: integer
+        deadline:
+          type: string
+          format: date
+    TaskPostBody:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        deadline:
+          type: string
+          format: date
+    TaskPutBody:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: integer
+        deadline:
+          type: string
+          format: date
