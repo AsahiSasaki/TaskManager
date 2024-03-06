@@ -4,31 +4,31 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class  TaskObject {
-    
+public class TaskObject {
+
     /**
      * タスクID
      */
-    public int id;
+    private int id;
 
     /**
      * タスク名
      */
-    public String title;
+    private String title;
 
     /**
      * タスク内容
      */
-    public String description;
+    private String description;
 
     /**
      * ステータス
      * 未完了：0、完了：1
      */
-    public int status;
+    private int status;
 
     /**
      * 期限
      */
-    public Date deadline;
+    private Date deadline;
 }

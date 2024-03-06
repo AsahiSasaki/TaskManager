@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.repository.TaskRepository;
-import com.excite.taskmanager.domain.exception.ValidationException;
+import com.excite.taskmanager.domain.exception.TaskNotExistException;
+
 
 @Service
 public class TaskService {
@@ -27,8 +28,12 @@ public class TaskService {
      *
      * @param id
      */
-    public TaskObject getTaskById(int id) {
-        return taskRepository.getTaskById(id);
+    public TaskObject getTaskById(int id) throws TaskNotExistException {
+        TaskObject ret = taskRepository.getTaskById(id);
+        if (ret == null) {
+            throw new TaskNotExistException(id);
+        }
+        return ret;
     }
 
     /**
@@ -36,8 +41,7 @@ public class TaskService {
      *
      * @param TaskObject
      */
-    public void createTask(TaskObject data) throws ValidationException {
-        TaskValidation.validate(data);
+    public void createTask(TaskObject data) {
         taskRepository.createTask(data);
     }
 
@@ -46,9 +50,11 @@ public class TaskService {
      *
      * @param TaskObject
      */
-    public int updateTask(TaskObject data) throws ValidationException {
-        TaskValidation.validate(data);
-        return taskRepository.updateTask(data);
+    public void updateTask(TaskObject data) throws TaskNotExistException {
+        int ret = taskRepository.updateTask(data);
+        if (ret == 0) {
+            throw new TaskNotExistException(data.getId());
+        }
     }
 
     /**
@@ -56,8 +62,10 @@ public class TaskService {
      *
      * @param id
      */
-    public int deleteTask(int id) {
-        int deleteRecord = taskRepository.deleteTask(id);
-        return deleteRecord;
+    public void deleteTask(int id) throws TaskNotExistException {
+        int ret = taskRepository.deleteTask(id);
+        if (ret == 0) {
+            throw new TaskNotExistException(id);
+        }
     }
 }

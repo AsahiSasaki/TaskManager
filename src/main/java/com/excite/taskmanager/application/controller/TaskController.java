@@ -22,6 +22,7 @@ import com.excite.taskmanager.domain.exception.TaskNotExistException;
 import com.excite.taskmanager.domain.exception.ValidationException;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
+import com.excite.taskmanager.domain.service.TaskValidation;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -55,9 +56,6 @@ public class TaskController {
     @GetMapping("tasks/{id}")
     public ResponseEntity<TaskResponseBody> getTaskById(@PathVariable("id") int id) throws TaskNotExistException {
         TaskObject ret = taskService.getTaskById(id);
-        if (ret == null) {
-            throw new TaskNotExistException(id);
-        }
         TaskResponseBody res = modelMapper.map(ret, TaskResponseBody.class);
         return ResponseEntity.ok().body(res);
     }
@@ -69,8 +67,9 @@ public class TaskController {
      * @throws ValidationException
      */
     @PostMapping("tasks")
-    public ResponseEntity<String> createTask(@RequestBody TaskPostBody taskPostBody) throws ValidationException {
+    public ResponseEntity<Void> createTask(@RequestBody TaskPostBody taskPostBody) throws ValidationException {
         TaskObject reqTaskObject = modelMapper.map(taskPostBody, TaskObject.class);
+        TaskValidation.validate(reqTaskObject);
         taskService.createTask(reqTaskObject);
         return ResponseEntity.ok().build();
     }
@@ -86,10 +85,8 @@ public class TaskController {
             throws ValidationException, TaskNotExistException {
         TaskObject reqTaskObject = modelMapper.map(taskPutBody, TaskObject.class);
         reqTaskObject.setId(id);
-        int ret = taskService.updateTask(reqTaskObject);
-        if (ret == 0) {
-            throw new TaskNotExistException(id);
-        }
+        TaskValidation.validate(reqTaskObject);
+        taskService.updateTask(reqTaskObject);
         return ResponseEntity.ok().build();
     }
 
@@ -100,11 +97,8 @@ public class TaskController {
      * @throws TaskNotExistException
      */
     @DeleteMapping("tasks/{id}")
-    public ResponseEntity<String> deleteTask(@PathVariable("id") int id) throws TaskNotExistException {
-        int ret = taskService.deleteTask(id);
-        if (ret == 0) {
-            throw new TaskNotExistException(id);
-        }
+    public ResponseEntity<Void> deleteTask(@PathVariable("id") int id) throws TaskNotExistException {
+        taskService.deleteTask(id);
         return ResponseEntity.ok().build();
     }
 
