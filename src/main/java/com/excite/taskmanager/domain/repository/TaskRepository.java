@@ -23,7 +23,7 @@ public interface TaskRepository {
      * @param id 
      * @return タスク
      */
-    public TaskObject getTaskById(Integer id);
+    public TaskObject getTaskById(int id);
 
     /**
      * タスク作成
@@ -47,5 +47,5 @@ public interface TaskRepository {
      * @param id 
      * @return 更新レコード数
      */
-    public void deleteTask(Integer id);
+    public int deleteTask(int id);
 }

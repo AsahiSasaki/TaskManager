@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.repository.TaskRepository;
+import com.excite.taskmanager.domain.exception.TaskNotExistException;
+
 
 @Service
 public class TaskService {
-    
+
     @Autowired
     private TaskRepository taskRepository;
 
@@ -17,35 +19,42 @@ public class TaskService {
      * タスク一覧取得
      *
      */
-    public List<TaskObject> getTasks(){
+    public List<TaskObject> getTasks() throws Exception {
         return taskRepository.getTasks();
     }
 
     /**
      * タスク取得
      *
-     * @param id 
+     * @param id
      */
-    public TaskObject getTaskById(int id){
-        return taskRepository.getTaskById(id);
+    public TaskObject getTaskById(int id) throws TaskNotExistException {
+        TaskObject ret = taskRepository.getTaskById(id);
+        if (ret == null) {
+            throw new TaskNotExistException(id);
+        }
+        return ret;
     }
 
     /**
      * タスク作成
      *
-     * @param TaskObject 
+     * @param TaskObject
      */
-    public void createTask(TaskObject data){
+    public void createTask(TaskObject data) {
         taskRepository.createTask(data);
     }
-    
+
     /**
      * タスク更新
      *
-     * @param TaskObject 
+     * @param TaskObject
      */
-    public void updateTask(TaskObject data){
-        taskRepository.updateTask(data);
+    public void updateTask(TaskObject data) throws TaskNotExistException {
+        int ret = taskRepository.updateTask(data);
+        if (ret == 0) {
+            throw new TaskNotExistException(data.getId());
+        }
     }
 
     /**
@@ -53,7 +62,10 @@ public class TaskService {
      *
      * @param id
      */
-    public void deleteTask(int id){
-        taskRepository.deleteTask(id);
+    public void deleteTask(int id) throws TaskNotExistException {
+        int ret = taskRepository.deleteTask(id);
+        if (ret == 0) {
+            throw new TaskNotExistException(id);
+        }
     }
 }

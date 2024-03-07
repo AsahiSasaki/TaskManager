@@ -8,9 +8,9 @@ import lombok.Data;
 public class TaskResponseBody {
 
     /**
-     *　ID
+     * ID
      */
-    private Integer id;
+    private int id;
 
     /**
      * タスク名
@@ -26,11 +26,11 @@ public class TaskResponseBody {
      * ステータス
      * 未完了：0、完了：1
      */
-    private Integer status;
+    private int status;
 
     /**
      * 期限
      */
     private Date deadline;
-    
+
 }

@@ -4,12 +4,12 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class  TaskObject {
-    
+public class TaskObject {
+
     /**
      * タスクID
      */
-    private Integer id;
+    private int id;
 
     /**
      * タスク名
@@ -25,7 +25,7 @@ public class  TaskObject {
      * ステータス
      * 未完了：0、完了：1
      */
-    private Integer status;
+    private int status;
 
     /**
      * 期限
