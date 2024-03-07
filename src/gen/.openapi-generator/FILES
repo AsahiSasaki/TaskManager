@@ -1,5 +1,3 @@
-README.md
-pom.xml
 src/main/java/org/openapitools/api/ApiUtil.java
 src/main/java/org/openapitools/api/TasksApi.java
 src/main/java/org/openapitools/model/TaskPostBody.java

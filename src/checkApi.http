@@ -12,7 +12,7 @@ POST http://localhost:8080/tasks
 content-type: application/json
 
 {
-    "title":"012345678999",
+    "title":"",
     "description":"すうぇい",
     "deadline":"2024-03-31"
 }

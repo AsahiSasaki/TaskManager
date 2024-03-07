@@ -1,0 +1,3 @@
+# pom.xmlとREADME.mdを生成しない
+**/pom.xml
+**/README.md

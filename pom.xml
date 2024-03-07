@@ -93,6 +93,11 @@
             <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.5.0</version>
+        </dependency>
  </dependencies>
 
 	<build>
@@ -121,9 +126,29 @@
                     <output>${project.basedir}/src/gen/</output>
                     <configOptions>
                         <interfaceOnly>true</interfaceOnly>
+                        <useBeanValidation>true</useBeanValidation>
                     </configOptions>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                  <execution>
+                    <id>add-source</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                      <goal>add-source</goal>
+                    </goals>
+                    <configuration>
+                      <sources>
+                        <source>${project.basedir}/src/gen/src/main/java</source>
+                      </sources>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>
 		</plugins>
 	</build>
 

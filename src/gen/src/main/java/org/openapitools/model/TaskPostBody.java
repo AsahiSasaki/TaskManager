@@ -20,7 +20,7 @@ import javax.annotation.Generated;
  * TaskPostBody
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-07T11:34:57.575098+09:00[Asia/Tokyo]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-07T16:52:20.931092+09:00[Asia/Tokyo]")
 public class TaskPostBody {
 
   private String title;
@@ -39,7 +39,7 @@ public class TaskPostBody {
    * Get title
    * @return title
   */
-  
+  @Size(min = 1, max = 20) 
   @Schema(name = "title", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("title")
   public String getTitle() {
@@ -59,7 +59,7 @@ public class TaskPostBody {
    * Get description
    * @return description
   */
-  
+  @Size(max = 50) 
   @Schema(name = "description", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("description")
   public String getDescription() {
