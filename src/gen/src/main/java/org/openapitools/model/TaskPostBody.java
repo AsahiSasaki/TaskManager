@@ -20,7 +20,7 @@ import javax.annotation.Generated;
  * TaskPostBody
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-06T08:46:17.027521+09:00[Asia/Tokyo]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-07T11:34:57.575098+09:00[Asia/Tokyo]")
 public class TaskPostBody {
 
   private String title;

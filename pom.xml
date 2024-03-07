@@ -115,21 +115,14 @@
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>7.3.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/taskApi.yaml</inputSpec>
-                            <generatorName>spring</generatorName>
-                            <output>${project.basedir}/src/gen/java/main</output>
-                            <configOptions>
-                               <interfaceOnly>true</interfaceOnly>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <inputSpec>${project.basedir}/src/main/resources/taskApi.yaml</inputSpec>
+                    <generatorName>spring</generatorName>
+                    <output>${project.basedir}/src/gen/</output>
+                    <configOptions>
+                        <interfaceOnly>true</interfaceOnly>
+                    </configOptions>
+                </configuration>
             </plugin>
 		</plugins>
 	</build>
