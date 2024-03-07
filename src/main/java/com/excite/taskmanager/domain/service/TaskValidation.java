@@ -21,8 +21,8 @@ public class TaskValidation {
             throw new ValidationException("タスク名は必須です");
         }
 
-        if (title.length() > 10) {
-            throw new ValidationException("タスク名は10文字以下で入力してください");
+        if (title.length() > 20) {
+            throw new ValidationException("タスク名は20文字以下で入力してください");
         }
     }
 

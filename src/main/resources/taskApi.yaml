@@ -98,8 +98,11 @@ components:
           type: integer
         title:
           type: string
+          minLength: 1
+          maxLength: 20
         description:
           type: string
+          maxLength: 50
         status:
           type: integer
         deadline:
@@ -110,8 +113,11 @@ components:
       properties:
         title:
           type: string
+          minLength: 1
+          maxLength: 20
         description:
           type: string
+          maxLength: 50
         deadline:
           type: string
           format: date
@@ -122,8 +128,11 @@ components:
           type: integer
         title:
           type: string
+          minLength: 1
+          maxLength: 20
         description:
           type: string
+          maxLength: 50
         status:
           type: integer
         deadline:
