@@ -1,4 +1,4 @@
-package org.openapitools.model;
+package com.excite.taskmanager.application.resource.gen.org.openapitools.model;
 
 import java.net.URI;
 import java.util.Objects;
@@ -8,20 +8,20 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
 import java.util.*;
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 /**
- * TaskResponseBody
+ * TaskPutBody
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-07T16:52:20.931092+09:00[Asia/Tokyo]")
-public class TaskResponseBody {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-08T13:25:58.131009+09:00[Asia/Tokyo]")
+public class TaskPutBody {
 
   private Integer id;
 
@@ -34,7 +34,7 @@ public class TaskResponseBody {
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate deadline;
 
-  public TaskResponseBody id(Integer id) {
+  public TaskPutBody id(Integer id) {
     this.id = id;
     return this;
   }
@@ -54,7 +54,7 @@ public class TaskResponseBody {
     this.id = id;
   }
 
-  public TaskResponseBody title(String title) {
+  public TaskPutBody title(String title) {
     this.title = title;
     return this;
   }
@@ -74,7 +74,7 @@ public class TaskResponseBody {
     this.title = title;
   }
 
-  public TaskResponseBody description(String description) {
+  public TaskPutBody description(String description) {
     this.description = description;
     return this;
   }
@@ -94,7 +94,7 @@ public class TaskResponseBody {
     this.description = description;
   }
 
-  public TaskResponseBody status(Integer status) {
+  public TaskPutBody status(Integer status) {
     this.status = status;
     return this;
   }
@@ -114,7 +114,7 @@ public class TaskResponseBody {
     this.status = status;
   }
 
-  public TaskResponseBody deadline(LocalDate deadline) {
+  public TaskPutBody deadline(LocalDate deadline) {
     this.deadline = deadline;
     return this;
   }
@@ -142,12 +142,12 @@ public class TaskResponseBody {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TaskResponseBody taskResponseBody = (TaskResponseBody) o;
-    return Objects.equals(this.id, taskResponseBody.id) &&
-        Objects.equals(this.title, taskResponseBody.title) &&
-        Objects.equals(this.description, taskResponseBody.description) &&
-        Objects.equals(this.status, taskResponseBody.status) &&
-        Objects.equals(this.deadline, taskResponseBody.deadline);
+    TaskPutBody taskPutBody = (TaskPutBody) o;
+    return Objects.equals(this.id, taskPutBody.id) &&
+        Objects.equals(this.title, taskPutBody.title) &&
+        Objects.equals(this.description, taskPutBody.description) &&
+        Objects.equals(this.status, taskPutBody.status) &&
+        Objects.equals(this.deadline, taskPutBody.deadline);
   }
 
   @Override
@@ -158,7 +158,7 @@ public class TaskResponseBody {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TaskResponseBody {\n");
+    sb.append("class TaskPutBody {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");

@@ -123,9 +123,13 @@
                 <configuration>
                     <inputSpec>${project.basedir}/src/main/resources/taskApi.yaml</inputSpec>
                     <generatorName>spring</generatorName>
-                    <output>${project.basedir}/src/gen/</output>
+                    <output>${project.basedir}</output>
                     <configOptions>
+                        <sourceFolder>/src/main/java</sourceFolder>
+                        <apiPackage>com.excite.taskmanager.application.resource.gen.org.openapitools.api</apiPackage>
+                        <modelPackage>com.excite.taskmanager.application.resource.gen.org.openapitools.model</modelPackage>
                         <interfaceOnly>true</interfaceOnly>
+                        <useSpringBoot3>true</useSpringBoot3>
                         <useBeanValidation>true</useBeanValidation>
                     </configOptions>
                 </configuration>

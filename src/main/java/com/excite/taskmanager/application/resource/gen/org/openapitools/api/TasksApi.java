@@ -3,11 +3,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-package org.openapitools.api;
+package com.excite.taskmanager.application.resource.gen.org.openapitools.api;
 
-import org.openapitools.model.TaskPostBody;
-import org.openapitools.model.TaskPutBody;
-import org.openapitools.model.TaskResponseBody;
+import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskPostBody;
+import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskPutBody;
+import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskResponseBody;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-07T16:52:20.931092+09:00[Asia/Tokyo]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-08T13:25:58.131009+09:00[Asia/Tokyo]")
 @Validated
 @Tag(name = "tasks", description = "the tasks API")
 public interface TasksApi {

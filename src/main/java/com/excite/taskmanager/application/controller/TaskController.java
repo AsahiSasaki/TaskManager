@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
-// import com.excite.taskmanager.application.resource.TaskPostBody;
-import org.openapitools.model.TaskPostBody;
+import com.excite.taskmanager.application.resource.TaskPostBody;
 import com.excite.taskmanager.application.resource.TaskPutBody;
 import com.excite.taskmanager.application.resource.TaskResponseBody;
 import com.excite.taskmanager.domain.exception.TaskNotExistException;

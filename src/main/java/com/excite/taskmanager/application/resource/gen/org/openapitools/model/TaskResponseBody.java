@@ -1,4 +1,4 @@
-package org.openapitools.model;
+package com.excite.taskmanager.application.resource.gen.org.openapitools.model;
 
 import java.net.URI;
 import java.util.Objects;
@@ -8,29 +8,53 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
 import java.util.*;
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 /**
- * TaskPostBody
+ * TaskResponseBody
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-07T16:52:20.931092+09:00[Asia/Tokyo]")
-public class TaskPostBody {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-08T13:25:58.131009+09:00[Asia/Tokyo]")
+public class TaskResponseBody {
+
+  private Integer id;
 
   private String title;
 
   private String description;
 
+  private Integer status;
+
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate deadline;
 
-  public TaskPostBody title(String title) {
+  public TaskResponseBody id(Integer id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Get id
+   * @return id
+  */
+  
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("id")
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public TaskResponseBody title(String title) {
     this.title = title;
     return this;
   }
@@ -50,7 +74,7 @@ public class TaskPostBody {
     this.title = title;
   }
 
-  public TaskPostBody description(String description) {
+  public TaskResponseBody description(String description) {
     this.description = description;
     return this;
   }
@@ -70,7 +94,27 @@ public class TaskPostBody {
     this.description = description;
   }
 
-  public TaskPostBody deadline(LocalDate deadline) {
+  public TaskResponseBody status(Integer status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * Get status
+   * @return status
+  */
+  
+  @Schema(name = "status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("status")
+  public Integer getStatus() {
+    return status;
+  }
+
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+
+  public TaskResponseBody deadline(LocalDate deadline) {
     this.deadline = deadline;
     return this;
   }
@@ -98,23 +142,27 @@ public class TaskPostBody {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TaskPostBody taskPostBody = (TaskPostBody) o;
-    return Objects.equals(this.title, taskPostBody.title) &&
-        Objects.equals(this.description, taskPostBody.description) &&
-        Objects.equals(this.deadline, taskPostBody.deadline);
+    TaskResponseBody taskResponseBody = (TaskResponseBody) o;
+    return Objects.equals(this.id, taskResponseBody.id) &&
+        Objects.equals(this.title, taskResponseBody.title) &&
+        Objects.equals(this.description, taskResponseBody.description) &&
+        Objects.equals(this.status, taskResponseBody.status) &&
+        Objects.equals(this.deadline, taskResponseBody.deadline);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, description, deadline);
+    return Objects.hash(id, title, description, status, deadline);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TaskPostBody {\n");
+    sb.append("class TaskResponseBody {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    deadline: ").append(toIndentedString(deadline)).append("\n");
     sb.append("}");
     return sb.toString();
