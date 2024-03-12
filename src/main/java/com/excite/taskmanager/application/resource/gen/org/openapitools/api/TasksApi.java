@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-08T13:25:58.131009+09:00[Asia/Tokyo]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-12T13:22:52.554538+09:00[Asia/Tokyo]")
 @Validated
 @Tag(name = "tasks", description = "the tasks API")
 public interface TasksApi {
@@ -44,37 +44,29 @@ public interface TasksApi {
     }
 
     /**
-     * GET /tasks : タスク一覧取得
+     * POST /tasks : タスク作成
      *
-     * @return タスク一覧取得成功 (status code 200)
+     * @param taskPostBody  (required)
+     * @return タスク作成成功 (status code 200)
+     *         or タスク作成失敗 BAD REQUEST (status code 400)
      */
     @Operation(
-        operationId = "tasksGet",
-        summary = "タスク一覧取得",
+        operationId = "createTask",
+        summary = "タスク作成",
         responses = {
-            @ApiResponse(responseCode = "200", description = "タスク一覧取得成功", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskResponseBody.class)))
-            })
+            @ApiResponse(responseCode = "200", description = "タスク作成成功"),
+            @ApiResponse(responseCode = "400", description = "タスク作成失敗 BAD REQUEST")
         }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
+        method = RequestMethod.POST,
         value = "/tasks",
-        produces = { "application/json" }
+        consumes = { "application/json" }
     )
     
-    default ResponseEntity<List<TaskResponseBody>> tasksGet(
-        
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"description\" : \"description\", \"id\" : 0, \"title\" : \"title\", \"deadline\" : \"2000-01-23\", \"status\" : 6 }, { \"description\" : \"description\", \"id\" : 0, \"title\" : \"title\", \"deadline\" : \"2000-01-23\", \"status\" : 6 } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
+    default ResponseEntity<Void> createTask(
+        @Parameter(name = "TaskPostBody", description = "", required = true) @Valid @RequestBody TaskPostBody taskPostBody
+    ) throws Exception {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -88,7 +80,7 @@ public interface TasksApi {
      *         or タスク削除失敗 指定したIDのタスクが見つかりませんでした。 (status code 404)
      */
     @Operation(
-        operationId = "tasksIdDelete",
+        operationId = "deleteTask",
         summary = "タスク削除",
         responses = {
             @ApiResponse(responseCode = "200", description = "タスク削除成功"),
@@ -100,9 +92,9 @@ public interface TasksApi {
         value = "/tasks/{id}"
     )
     
-    default ResponseEntity<Void> tasksIdDelete(
+    default ResponseEntity<Void> deleteTask(
         @Parameter(name = "id", description = "タスクID", required = true, in = ParameterIn.PATH) @PathVariable("id") Integer id
-    ) {
+    ) throws Exception {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -116,7 +108,7 @@ public interface TasksApi {
      *         or タスク取得失敗 指定したIDのタスクが見つかりませんでした。 (status code 404)
      */
     @Operation(
-        operationId = "tasksIdGet",
+        operationId = "getTaskByID",
         summary = "タスク取得",
         responses = {
             @ApiResponse(responseCode = "200", description = "タスク取得成功", content = {
@@ -131,13 +123,50 @@ public interface TasksApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<TaskResponseBody> tasksIdGet(
+    default ResponseEntity<TaskResponseBody> getTaskByID(
         @Parameter(name = "id", description = "タスクID", required = true, in = ParameterIn.PATH) @PathVariable("id") Integer id
-    ) {
+    ) throws Exception {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"description\" : \"description\", \"id\" : 0, \"title\" : \"title\", \"deadline\" : \"2000-01-23\", \"status\" : 6 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /tasks : タスク一覧取得
+     *
+     * @return タスク一覧取得成功 (status code 200)
+     */
+    @Operation(
+        operationId = "getTasks",
+        summary = "タスク一覧取得",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "タスク一覧取得成功", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskResponseBody.class)))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/tasks",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<List<TaskResponseBody>> getTasks(
+        
+    ) throws Exception {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"description\" : \"description\", \"id\" : 0, \"title\" : \"title\", \"deadline\" : \"2000-01-23\", \"status\" : 6 }, { \"description\" : \"description\", \"id\" : 0, \"title\" : \"title\", \"deadline\" : \"2000-01-23\", \"status\" : 6 } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -158,12 +187,10 @@ public interface TasksApi {
      *         or タスク更新失敗 指定したIDのタスクが見つかりませんでした。 (status code 404)
      */
     @Operation(
-        operationId = "tasksIdPut",
+        operationId = "updateTask",
         summary = "タスク更新",
         responses = {
-            @ApiResponse(responseCode = "200", description = "タスク更新成功", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskResponseBody.class))
-            }),
+            @ApiResponse(responseCode = "200", description = "タスク更新成功"),
             @ApiResponse(responseCode = "400", description = "タスク更新失敗 BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "タスク更新失敗 指定したIDのタスクが見つかりませんでした。")
         }
@@ -171,52 +198,13 @@ public interface TasksApi {
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/tasks/{id}",
-        produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<TaskResponseBody> tasksIdPut(
+    default ResponseEntity<Void> updateTask(
         @Parameter(name = "id", description = "タスクID", required = true, in = ParameterIn.PATH) @PathVariable("id") Integer id,
         @Parameter(name = "TaskPutBody", description = "", required = true) @Valid @RequestBody TaskPutBody taskPutBody
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"description\" : \"description\", \"id\" : 0, \"title\" : \"title\", \"deadline\" : \"2000-01-23\", \"status\" : 6 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * POST /tasks : タスク作成
-     *
-     * @param taskPostBody  (required)
-     * @return タスク作成成功 (status code 200)
-     *         or タスク作成失敗 BAD REQUEST (status code 400)
-     */
-    @Operation(
-        operationId = "tasksPost",
-        summary = "タスク作成",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "タスク作成成功"),
-            @ApiResponse(responseCode = "400", description = "タスク作成失敗 BAD REQUEST")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/tasks",
-        consumes = { "application/json" }
-    )
-    
-    default ResponseEntity<Void> tasksPost(
-        @Parameter(name = "TaskPostBody", description = "", required = true) @Valid @RequestBody TaskPostBody taskPostBody
-    ) {
+    ) throws Exception {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

@@ -93,11 +93,6 @@
             <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>3.5.0</version>
-        </dependency>
  </dependencies>
 
 	<build>
@@ -125,34 +120,16 @@
                     <generatorName>spring</generatorName>
                     <output>${project.basedir}</output>
                     <configOptions>
-                        <sourceFolder>/src/main/java</sourceFolder>
+                        <sourceFolder>src/main/java</sourceFolder>
                         <apiPackage>com.excite.taskmanager.application.resource.gen.org.openapitools.api</apiPackage>
                         <modelPackage>com.excite.taskmanager.application.resource.gen.org.openapitools.model</modelPackage>
                         <interfaceOnly>true</interfaceOnly>
                         <useSpringBoot3>true</useSpringBoot3>
                         <useBeanValidation>true</useBeanValidation>
+                        <unhandledException>true</unhandledException>
                     </configOptions>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                  <execution>
-                    <id>add-source</id>
-                    <phase>generate-sources</phase>
-                    <goals>
-                      <goal>add-source</goal>
-                    </goals>
-                    <configuration>
-                      <sources>
-                        <source>${project.basedir}/src/gen/src/main/java</source>
-                      </sources>
-                    </configuration>
-                  </execution>
-                </executions>
-              </plugin>
 		</plugins>
 	</build>
 
