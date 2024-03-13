@@ -20,7 +20,7 @@ import jakarta.annotation.Generated;
  * TaskPutBody
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-12T13:22:52.554538+09:00[Asia/Tokyo]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-13T15:47:07.202304+09:00[Asia/Tokyo]")
 public class TaskPutBody {
 
   private Integer id;
@@ -83,7 +83,7 @@ public class TaskPutBody {
    * Get description
    * @return description
   */
-  @Size(max = 50) 
+  @Pattern(regexp = "^([^\\x01-\\x7E])+") @Size(max = 50) 
   @Schema(name = "description", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("description")
   public String getDescription() {
@@ -120,11 +120,11 @@ public class TaskPutBody {
   }
 
   /**
-   * Get deadline
+   * 本日以降の日付をYYYY-MM-DD形式で指定してください。
    * @return deadline
   */
   @Valid 
-  @Schema(name = "deadline", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "deadline", description = "本日以降の日付をYYYY-MM-DD形式で指定してください。", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("deadline")
   public LocalDate getDeadline() {
     return deadline;

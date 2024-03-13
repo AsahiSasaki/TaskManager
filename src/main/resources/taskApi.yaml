@@ -104,11 +104,13 @@ components:
         description:
           type: string
           maxLength: 50
+          pattern: '^([^\x01-\x7E])+'
         status:
           type: integer
         deadline:
           type: string
           format: date
+          description: "本日以降の日付をYYYY-MM-DD形式で指定してください。"
     TaskPostBody:
       type: object
       properties:
@@ -119,9 +121,11 @@ components:
         description:
           type: string
           maxLength: 50
+          pattern: '^([^\x01-\x7E])+'
         deadline:
           type: string
           format: date
+          description: "本日以降の日付をYYYY-MM-DD形式で指定してください。"
     TaskPutBody:
       type: object
       properties:
@@ -134,8 +138,10 @@ components:
         description:
           type: string
           maxLength: 50
+          pattern: '^([^\x01-\x7E])+'
         status:
           type: integer
         deadline:
           type: string
           format: date
+          description: "本日以降の日付をYYYY-MM-DD形式で指定してください。"
