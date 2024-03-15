@@ -65,7 +65,7 @@ public class TaskController implements TasksApi {
      * @throws ValidationException
      */
     @Override
-    public ResponseEntity<Void> createTask(@Valid TaskPostBody taskPostBody) throws Exception {
+    public ResponseEntity<Void> createTask(@Valid TaskPostBody taskPostBody) throws ValidationException {
         TaskObject reqTaskObject = modelMapper.map(taskPostBody, TaskObject.class);
         TaskValidation.validate(reqTaskObject);
         taskService.createTask(reqTaskObject);
