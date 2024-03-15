@@ -2,8 +2,11 @@ package com.excite.taskmanager;
 
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskResponseBody.StatusEnum;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -31,6 +34,15 @@ public class ApplicationConfig {
 
         modelMapper.addConverter(localDateToDate);
         modelMapper.addConverter(dateToLocalDate);
+
+        // integer→EnumStatus
+        AbstractConverter<Integer, StatusEnum> intToEnumStatus = new AbstractConverter<Integer, StatusEnum>() {
+            protected StatusEnum convert(Integer context) {
+                return StatusEnum.fromValue(context);
+            }
+        };
+
+        modelMapper.addConverter(intToEnumStatus);
 
         return modelMapper;
     }

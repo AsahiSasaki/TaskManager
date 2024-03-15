@@ -12,12 +12,12 @@ import org.modelmapper.TypeToken;
 import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskPostBody;
 import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskPutBody;
 import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskResponseBody;
+import com.excite.taskmanager.common.TaskValidation;
 import com.excite.taskmanager.application.resource.gen.org.openapitools.api.TasksApi;
 import com.excite.taskmanager.domain.exception.TaskNotExistException;
 import com.excite.taskmanager.domain.exception.ValidationException;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
-import com.excite.taskmanager.domain.service.TaskValidation;
 
 import jakarta.validation.Valid;
 
@@ -44,12 +44,12 @@ public class TaskController implements TasksApi {
         return ResponseEntity.ok().body(res);
     }
 
-    // /**
-    // * タスク取得
-    // *
-    // * @param id
-    // * @throws TaskNotExistException
-    // */
+    /**
+     * タスク取得
+     *
+     * @param id
+     * @throws TaskNotExistException
+     */
     @Override
     public ResponseEntity<TaskResponseBody> getTaskByID(Integer id)
             throws TaskNotExistException {
@@ -95,7 +95,7 @@ public class TaskController implements TasksApi {
      * @throws TaskNotExistException
      */
     @Override
-    public ResponseEntity<Void> deleteTask(Integer id) throws Exception {
+    public ResponseEntity<Void> deleteTask(Integer id) throws TaskNotExistException {
         taskService.deleteTask(id);
         return ResponseEntity.ok().build();
     }
