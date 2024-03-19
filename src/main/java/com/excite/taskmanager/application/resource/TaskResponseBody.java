@@ -1,13 +1,14 @@
-package com.excite.taskmanager.domain.object;
+package com.excite.taskmanager.application.resource;
 
-import java.util.Date;
+import java.sql.Date;
+
 import lombok.Data;
 
 @Data
-public class TaskObject {
+public class TaskResponseBody {
 
     /**
-     * タスクID
+     * ID
      */
     private int id;
 
@@ -31,4 +32,5 @@ public class TaskObject {
      * 期限
      */
     private Date deadline;
+
 }

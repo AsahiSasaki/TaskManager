@@ -10,7 +10,7 @@ public class TaskPutBody {
     /**
      *　ID
      */
-    private Integer id;
+    private int id;
 
     /**
      * タスク名
@@ -26,7 +26,7 @@ public class TaskPutBody {
      * ステータス
      * 未完了：0、完了：1
      */
-    private Integer status;
+    private int status;
 
     /**
      * 期限

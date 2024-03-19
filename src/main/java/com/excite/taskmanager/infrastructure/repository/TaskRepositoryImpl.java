@@ -14,7 +14,7 @@ import com.excite.taskmanager.infrastructure.entity.Task;
 import com.excite.taskmanager.infrastructure.mapper.TaskMapper;
 
 @Repository
-public class TaskRepositoryImpl implements TaskRepository{
+public class TaskRepositoryImpl implements TaskRepository {
 
     @Autowired
     private TaskMapper taskMapper;
@@ -26,15 +26,18 @@ public class TaskRepositoryImpl implements TaskRepository{
     public List<TaskObject> getTasks() {
 
         List<Task> ret = taskMapper.selectByExample(null);
-        
-        return modelMapper.map(ret, new TypeToken<List<TaskObject>>() {}.getType());
+
+        return modelMapper.map(ret, new TypeToken<List<TaskObject>>() {
+        }.getType());
     }
 
     @Override
-    public TaskObject getTaskById(Integer id) {
-
-        TaskObject ret = modelMapper.map(taskMapper.selectByPrimaryKey(id), TaskObject.class);
-
+    public TaskObject getTaskById(int id) {
+        var task = taskMapper.selectByPrimaryKey(id);
+        if (task == null) {
+            return null;
+        }
+        TaskObject ret = modelMapper.map(task, TaskObject.class);
         return ret;
     }
 
@@ -57,8 +60,8 @@ public class TaskRepositoryImpl implements TaskRepository{
     }
 
     @Override
-    public void deleteTask(Integer id) {
-
-        taskMapper.deleteByPrimaryKey(id);
+    public int deleteTask(int id) {
+        int ret = taskMapper.deleteByPrimaryKey(id);
+        return ret;
     }
 }
