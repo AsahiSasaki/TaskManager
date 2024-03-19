@@ -4,8 +4,8 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class  TaskObject {
-    
+public class TaskObject {
+
     /**
      * タスクID
      */

@@ -12,12 +12,12 @@ import org.modelmapper.TypeToken;
 import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskPostBody;
 import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskPutBody;
 import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskResponseBody;
+import com.excite.taskmanager.common.TaskValidation;
 import com.excite.taskmanager.application.resource.gen.org.openapitools.api.TasksApi;
 import com.excite.taskmanager.domain.exception.TaskNotExistException;
 import com.excite.taskmanager.domain.exception.ValidationException;
 import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.service.TaskService;
-import com.excite.taskmanager.domain.service.TaskValidation;
 
 import jakarta.validation.Valid;
 
@@ -68,6 +68,7 @@ public class TaskController implements TasksApi {
     public ResponseEntity<Void> createTask(@Valid TaskPostBody taskPostBody) throws ValidationException {
         TaskObject reqTaskObject = modelMapper.map(taskPostBody, TaskObject.class);
         TaskValidation.validate(reqTaskObject);
+        TaskValidation.validate(reqTaskObject);
         taskService.createTask(reqTaskObject);
         return ResponseEntity.ok().build();
     }
@@ -83,6 +84,8 @@ public class TaskController implements TasksApi {
             throws ValidationException, TaskNotExistException {
         TaskObject reqTaskObject = modelMapper.map(taskPutBody, TaskObject.class);
         reqTaskObject.setId(id);
+        TaskValidation.validate(reqTaskObject);
+        taskService.updateTask(reqTaskObject);
         TaskValidation.validate(reqTaskObject);
         taskService.updateTask(reqTaskObject);
         return ResponseEntity.ok().build();

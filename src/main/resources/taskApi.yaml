@@ -107,6 +107,7 @@ components:
           pattern: '^([^\x01-\x7E])+'
         status:
           type: integer
+          enum: [0, 1]
         deadline:
           type: string
           format: date
@@ -141,6 +142,7 @@ components:
           pattern: '^([^\x01-\x7E])+'
         status:
           type: integer
+          enum: [0, 1]
         deadline:
           type: string
           format: date

@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.excite.taskmanager.domain.exception.ValidationException;
 import com.excite.taskmanager.domain.object.TaskObject;
-import com.excite.taskmanager.domain.service.TaskValidation;
+import com.excite.taskmanager.common.TaskValidation;
 
 @SpringBootTest
 public class TaskValidationTest {

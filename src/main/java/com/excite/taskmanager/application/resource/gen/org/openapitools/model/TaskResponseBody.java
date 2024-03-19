@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -20,7 +21,7 @@ import jakarta.annotation.Generated;
  * TaskResponseBody
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-13T15:47:07.202304+09:00[Asia/Tokyo]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-15T10:10:31.462474+09:00[Asia/Tokyo]")
 public class TaskResponseBody {
 
   private Integer id;
@@ -29,7 +30,42 @@ public class TaskResponseBody {
 
   private String description;
 
-  private Integer status;
+  /**
+   * Gets or Sets status
+   */
+  public enum StatusEnum {
+    NUMBER_0(0),
+    
+    NUMBER_1(1);
+
+    private Integer value;
+
+    StatusEnum(Integer value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public Integer getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static StatusEnum fromValue(Integer value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  private StatusEnum status;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate deadline;
@@ -94,7 +130,7 @@ public class TaskResponseBody {
     this.description = description;
   }
 
-  public TaskResponseBody status(Integer status) {
+  public TaskResponseBody status(StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -106,11 +142,11 @@ public class TaskResponseBody {
   
   @Schema(name = "status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("status")
-  public Integer getStatus() {
+  public StatusEnum getStatus() {
     return status;
   }
 
-  public void setStatus(Integer status) {
+  public void setStatus(StatusEnum status) {
     this.status = status;
   }
 
