@@ -8,7 +8,6 @@ import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.domain.repository.TaskRepository;
 import com.excite.taskmanager.domain.exception.TaskNotExistException;
 
-
 @Service
 public class TaskService {
 

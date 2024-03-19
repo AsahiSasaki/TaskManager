@@ -1,0 +1,5 @@
+src/main/java/com/excite/taskmanager/application/resource/gen/org/openapitools/api/ApiUtil.java
+src/main/java/com/excite/taskmanager/application/resource/gen/org/openapitools/api/TasksApi.java
+src/main/java/com/excite/taskmanager/application/resource/gen/org/openapitools/model/TaskPostBody.java
+src/main/java/com/excite/taskmanager/application/resource/gen/org/openapitools/model/TaskPutBody.java
+src/main/java/com/excite/taskmanager/application/resource/gen/org/openapitools/model/TaskResponseBody.java

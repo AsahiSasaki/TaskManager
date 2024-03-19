@@ -13,6 +13,7 @@ import com.excite.taskmanager.domain.object.TaskObject;
 import com.excite.taskmanager.infrastructure.entity.Task;
 import com.excite.taskmanager.infrastructure.mapper.TaskMapper;
 
+
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
 
@@ -33,7 +34,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public TaskObject getTaskById(int id) {
-        var task = taskMapper.selectByPrimaryKey(id);
+        Task task = taskMapper.selectByPrimaryKey(id);
         if (task == null) {
             return null;
         }
@@ -44,7 +45,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public int createTask(TaskObject data) {
 
-        var entity = modelMapper.map(data, Task.class);
+        Task entity = modelMapper.map(data, Task.class);
         int ret = taskMapper.insertSelective(entity);
 
         return ret;
@@ -53,7 +54,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public int updateTask(TaskObject data) {
 
-        var entity = modelMapper.map(data, Task.class);
+        Task entity = modelMapper.map(data, Task.class);
         int ret = taskMapper.updateByPrimaryKey(entity);
 
         return ret;
