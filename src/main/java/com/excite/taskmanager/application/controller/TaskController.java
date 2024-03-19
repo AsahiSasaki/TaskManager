@@ -68,6 +68,7 @@ public class TaskController implements TasksApi {
     public ResponseEntity<Void> createTask(@Valid TaskPostBody taskPostBody) throws ValidationException {
         TaskObject reqTaskObject = modelMapper.map(taskPostBody, TaskObject.class);
         TaskValidation.validate(reqTaskObject);
+        TaskValidation.validate(reqTaskObject);
         taskService.createTask(reqTaskObject);
         return ResponseEntity.ok().build();
     }
@@ -83,6 +84,8 @@ public class TaskController implements TasksApi {
             throws ValidationException, TaskNotExistException {
         TaskObject reqTaskObject = modelMapper.map(taskPutBody, TaskObject.class);
         reqTaskObject.setId(id);
+        TaskValidation.validate(reqTaskObject);
+        taskService.updateTask(reqTaskObject);
         TaskValidation.validate(reqTaskObject);
         taskService.updateTask(reqTaskObject);
         return ResponseEntity.ok().build();

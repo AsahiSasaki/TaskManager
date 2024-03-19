@@ -33,6 +33,12 @@ public class TaskService {
             throw new TaskNotExistException(id);
         }
         return ret;
+    public TaskObject getTaskById(int id) throws TaskNotExistException {
+        TaskObject ret = taskRepository.getTaskById(id);
+        if (ret == null) {
+            throw new TaskNotExistException(id);
+        }
+        return ret;
     }
 
     /**
@@ -40,6 +46,7 @@ public class TaskService {
      *
      * @param TaskObject
      */
+    public void createTask(TaskObject data) {
     public void createTask(TaskObject data) {
         taskRepository.createTask(data);
     }
@@ -54,6 +61,11 @@ public class TaskService {
         if (ret == 0) {
             throw new TaskNotExistException(data.getId());
         }
+    public void updateTask(TaskObject data) throws TaskNotExistException {
+        int ret = taskRepository.updateTask(data);
+        if (ret == 0) {
+            throw new TaskNotExistException(data.getId());
+        }
     }
 
     /**
@@ -61,6 +73,11 @@ public class TaskService {
      *
      * @param id
      */
+    public void deleteTask(int id) throws TaskNotExistException {
+        int ret = taskRepository.deleteTask(id);
+        if (ret == 0) {
+            throw new TaskNotExistException(id);
+        }
     public void deleteTask(int id) throws TaskNotExistException {
         int ret = taskRepository.deleteTask(id);
         if (ret == 0) {
