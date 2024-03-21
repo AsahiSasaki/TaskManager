@@ -45,11 +45,11 @@ public class TaskController implements TasksApi {
     }
 
     /**
-    * タスク取得
-    *
-    * @param id
-    * @throws TaskNotExistException
-    */
+     * タスク取得
+     *
+     * @param id
+     * @throws TaskNotExistException
+     */
     @Override
     public ResponseEntity<TaskResponseBody> getTaskByID(Integer id)
             throws TaskNotExistException {
@@ -98,7 +98,7 @@ public class TaskController implements TasksApi {
      * @throws TaskNotExistException
      */
     @Override
-    public ResponseEntity<Void> deleteTask(Integer id) throws  TaskNotExistException {
+    public ResponseEntity<Void> deleteTask(Integer id) throws TaskNotExistException {
         taskService.deleteTask(id);
         return ResponseEntity.ok().build();
     }
