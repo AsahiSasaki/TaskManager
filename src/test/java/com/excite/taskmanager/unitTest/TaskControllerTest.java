@@ -12,12 +12,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,56 +51,62 @@ public class TaskControllerTest {
     @Mock
     private ModelMapper modelMapper;
 
+    private TaskObject task;
+    private TaskPostBody taskPostBody;
+    private TaskPutBody taskPutBody;
+    private TaskResponseBody taskResponseBody;
+    private TaskNotExistException taskNotExistException;
+    private ValidationException validationException;
+    private int id;
+    private String errorMessage;
+
+    @BeforeEach
+    public void init() {
+        MockitoAnnotations.openMocks(this);
+        task = new TaskObject();
+        taskPostBody = new TaskPostBody();
+        taskPutBody = new TaskPutBody();
+        taskResponseBody = new TaskResponseBody();
+        id = new Random().nextInt(Integer.MAX_VALUE) + 1;
+        taskNotExistException = new TaskNotExistException(id);
+        errorMessage = "タスク名は必須です";
+        validationException = new ValidationException(errorMessage);
+    }
+
     @Test
     public void testGetTasks() throws Exception {
-        List<TaskObject> taskObjects = Arrays.asList(new TaskObject(), new TaskObject());
-        List<TaskResponseBody> taskResponseBodies = Arrays.asList(new TaskResponseBody(), new TaskResponseBody());
+        List<TaskObject> taskObjects = Arrays.asList(task, task);
+        List<TaskResponseBody> taskResponseBodies = Arrays.asList(taskResponseBody, taskResponseBody);
 
         when(taskService.getTasks()).thenReturn(taskObjects);
         when(modelMapper.map(taskObjects, new TypeToken<List<TaskResponseBody>>() {
         }.getType())).thenReturn(taskResponseBodies);
 
-        ResponseEntity<List<TaskResponseBody>> response = taskController.getTasks();
-
-        assertEquals(ResponseEntity.ok().body(taskResponseBodies), response);
+        assertEquals(ResponseEntity.ok().body(taskResponseBodies), taskController.getTasks());
     }
 
     @Test
     public void testGetTaskByID_Success() throws TaskNotExistException {
-        TaskObject task = new TaskObject();
         when(taskService.getTaskById(anyInt())).thenReturn(task);
+        when(modelMapper.map(task, TaskResponseBody.class)).thenReturn(taskResponseBody);
 
-        TaskObject ret = taskService.getTaskById(anyInt());
-
-        TaskResponseBody taskResponseBody = new TaskResponseBody();
-        when(modelMapper.map(ret, TaskResponseBody.class)).thenReturn(taskResponseBody);
-
-        ResponseEntity<TaskResponseBody> response = taskController.getTaskByID(1);
-
-        assertEquals(ResponseEntity.ok().body(taskResponseBody), response);
+        assertEquals(ResponseEntity.ok().body(taskResponseBody), taskController.getTaskByID(id));
     }
 
     @Test
     public void testGetTaskByID_TaskNotExistException() throws TaskNotExistException {
-        when(taskService.getTaskById(anyInt())).thenThrow(new TaskNotExistException(anyInt()));
+        when(taskService.getTaskById(anyInt())).thenThrow(taskNotExistException);
 
-        assertThrows(TaskNotExistException.class, () -> {
-            taskController.getTaskByID(1);
-        });
+        assertThrows(TaskNotExistException.class, () -> taskController.getTaskByID(id));
     }
 
     @Test
     public void testCreateTask_Success() throws ValidationException {
         try (MockedStatic<TaskValidation> mocked = Mockito.mockStatic(TaskValidation.class)) {
-            TaskObject task = new TaskObject();
-            mocked.when(() -> {
-                TaskValidation.validate(task);
-            }).thenAnswer(invocation -> null);
+            mocked.when(() -> TaskValidation.validate(task)).thenAnswer(invocation -> null);
             doNothing().when(taskService).createTask(task);
-            TaskPostBody taskPostBody = new TaskPostBody();
-            assertDoesNotThrow(() -> {
-                taskController.createTask(taskPostBody);
-            });
+
+            assertDoesNotThrow(() -> taskController.createTask(taskPostBody));
         }
     }
 
@@ -106,32 +115,28 @@ public class TaskControllerTest {
         try (MockedStatic<TaskValidation> mocked = Mockito.mockStatic(TaskValidation.class)) {
             mocked.when(() -> {
                 TaskValidation.validate(any(TaskObject.class));
-            }).thenThrow(new ValidationException("タスク名は必須です"));
+            }).thenThrow(validationException);
 
-            TaskPostBody taskPostBody = new TaskPostBody();
-            TaskObject task = new TaskObject();
             when(modelMapper.map(any(TaskPostBody.class), eq(TaskObject.class))).thenReturn(task);
             Exception exception = assertThrows(ValidationException.class, () -> {
                 taskController.createTask(taskPostBody);
             });
 
-            assertEquals("タスク名は必須です", exception.getMessage());
+            assertEquals(errorMessage, exception.getMessage());
         }
     }
 
     @Test
     public void testUpdateTask_Success() throws ValidationException, TaskNotExistException {
         try (MockedStatic<TaskValidation> mocked = Mockito.mockStatic(TaskValidation.class)) {
-            TaskObject task = Mockito.mock(TaskObject.class);
             when(modelMapper.map(any(TaskPutBody.class), eq(TaskObject.class))).thenReturn(task);
             mocked.when(() -> {
                 TaskValidation.validate(task);
             }).thenAnswer(invocation -> null);
             doNothing().when(taskService).updateTask(task);
-            TaskPutBody taskPutBody = new TaskPutBody();
 
             assertDoesNotThrow(() -> {
-                taskController.updateTask(1, taskPutBody);
+                taskController.updateTask(id, taskPutBody);
             });
         }
     }
@@ -143,47 +148,42 @@ public class TaskControllerTest {
             when(modelMapper.map(any(TaskPutBody.class), eq(TaskObject.class))).thenReturn(task);
             mocked.when(() -> {
                 TaskValidation.validate(task);
-            }).thenThrow(new ValidationException("タスク名は必須です"));
+            }).thenThrow(validationException);
             doNothing().when(taskService).updateTask(task);
-            TaskPutBody taskPutBody = new TaskPutBody();
             Exception exception = assertThrows(ValidationException.class, () -> {
-                taskController.updateTask(1, taskPutBody);
+                taskController.updateTask(id, taskPutBody);
             });
 
-            assertEquals("タスク名は必須です", exception.getMessage());
+            assertEquals(errorMessage, exception.getMessage());
         }
     }
 
     @Test
     public void testUpdateTask_TaskNotExistException() throws ValidationException, TaskNotExistException {
         try (MockedStatic<TaskValidation> mocked = Mockito.mockStatic(TaskValidation.class)) {
-            TaskObject task = Mockito.mock(TaskObject.class);
             when(modelMapper.map(any(TaskPutBody.class), eq(TaskObject.class))).thenReturn(task);
             mocked.when(() -> {
                 TaskValidation.validate(task);
             }).thenAnswer(invocation -> null);
-            doThrow(new TaskNotExistException(task.getId())).when(taskService).updateTask(task);
-            TaskPutBody taskPutBody = new TaskPutBody();
+            doThrow(taskNotExistException).when(taskService).updateTask(task);
             assertThrows(TaskNotExistException.class, () -> {
-                taskController.updateTask(1, taskPutBody);
+                taskController.updateTask(id, taskPutBody);
             });
         }
     }
 
     @Test
     public void testDeleteTask_Success() throws TaskNotExistException {
-        int taskId = 1;
-        doNothing().when(taskService).deleteTask(taskId);
+        doNothing().when(taskService).deleteTask(id);
 
         assertDoesNotThrow(() -> {
-            taskController.deleteTask(taskId);
+            taskController.deleteTask(id);
         });
     }
 
     @Test
     public void testDeleteTask_TaskNotExistException() throws TaskNotExistException {
-        int id = 1;
-        doThrow(new TaskNotExistException(id)).when(taskService).deleteTask(id);
+        doThrow(taskNotExistException).when(taskService).deleteTask(id);
 
         assertThrows(TaskNotExistException.class, () -> {
             taskController.deleteTask(id);
