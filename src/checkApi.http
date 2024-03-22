@@ -25,7 +25,7 @@ content-type: application/json
 {
     "title":"telecaster",
     "description":"タスク更新",
-    "status":10,
+    "status":0,
     "deadline":"2024-03-31"
 }
 

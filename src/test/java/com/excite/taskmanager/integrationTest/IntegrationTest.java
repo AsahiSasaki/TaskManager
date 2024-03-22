@@ -1,6 +1,9 @@
 package com.excite.taskmanager.integrationTest;
 
 import java.io.FileInputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.sql.DataSource;
 import org.dbunit.DataSourceDatabaseTester;
 import org.dbunit.IDatabaseTester;
@@ -12,7 +15,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskResponseBody;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
@@ -23,6 +34,9 @@ public class IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private DataSource dataSource;
@@ -42,13 +56,55 @@ public class IntegrationTest {
     }
 
     @Test
-    public void getTasksTest() throws Exception {
+    public void testGetTasks() throws Exception {
         mockMvc.perform(get("/tasks"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].title").value("Task1"))
                 .andExpect(jsonPath("$[1].title").value("Task2"))
                 .andExpect(jsonPath("$[2].title").value("Task3"));
+    }
+
+    @Test
+    public void testGetTaskByID_Success() throws Exception {
+        mockMvc.perform(get("/tasks/3"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value("3"));
+    }
+
+    @Test
+    public void testGetTaskByID_TaskNotExistException() throws Exception {
+        mockMvc.perform(get("/tasks/617"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    public void testCreateTask_Success() throws Exception {
+        TaskResponseBody task = new TaskResponseBody();
+        task.setTitle("結合テスト");
+        task.setDescription("説明");
+        task.setDeadline(LocalDate.of(2025, 12, 31));
+
+        String taskJson = objectMapper.writeValueAsString(task);
+
+        mockMvc.perform(post("/tasks")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(taskJson))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteTask_Success() throws Exception {
+        mockMvc.perform(delete("/tasks/3"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteTask_TaskNotExistException() throws Exception {
+        mockMvc.perform(delete("/tasks/48"))
+                .andExpect(status().isNotFound());
     }
 
 }
