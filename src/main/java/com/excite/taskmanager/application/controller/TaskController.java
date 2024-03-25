@@ -45,11 +45,11 @@ public class TaskController implements TasksApi {
     }
 
     /**
-    * タスク取得
-    *
-    * @param id
-    * @throws TaskNotExistException
-    */
+     * タスク取得
+     *
+     * @param id
+     * @throws TaskNotExistException
+     */
     @Override
     public ResponseEntity<TaskResponseBody> getTaskByID(Integer id)
             throws TaskNotExistException {
@@ -68,7 +68,6 @@ public class TaskController implements TasksApi {
     public ResponseEntity<Void> createTask(@Valid TaskPostBody taskPostBody) throws ValidationException {
         TaskObject reqTaskObject = modelMapper.map(taskPostBody, TaskObject.class);
         TaskValidation.validate(reqTaskObject);
-        TaskValidation.validate(reqTaskObject);
         taskService.createTask(reqTaskObject);
         return ResponseEntity.ok().build();
     }
@@ -86,8 +85,6 @@ public class TaskController implements TasksApi {
         reqTaskObject.setId(id);
         TaskValidation.validate(reqTaskObject);
         taskService.updateTask(reqTaskObject);
-        TaskValidation.validate(reqTaskObject);
-        taskService.updateTask(reqTaskObject);
         return ResponseEntity.ok().build();
     }
 
@@ -98,7 +95,7 @@ public class TaskController implements TasksApi {
      * @throws TaskNotExistException
      */
     @Override
-    public ResponseEntity<Void> deleteTask(Integer id) throws  TaskNotExistException {
+    public ResponseEntity<Void> deleteTask(Integer id) throws TaskNotExistException {
         taskService.deleteTask(id);
         return ResponseEntity.ok().build();
     }

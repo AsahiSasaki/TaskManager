@@ -2,7 +2,6 @@ package com.excite.taskmanager.integrationTest;
 
 import java.io.FileInputStream;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import javax.sql.DataSource;
 import org.dbunit.DataSourceDatabaseTester;
@@ -18,7 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskResponseBody;
+import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskPostBody;
+import com.excite.taskmanager.application.resource.gen.org.openapitools.model.TaskPutBody;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -82,7 +82,7 @@ public class IntegrationTest {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     public void testCreateTask_Success() throws Exception {
-        TaskResponseBody task = new TaskResponseBody();
+        TaskPostBody task = new TaskPostBody();
         task.setTitle("結合テスト");
         task.setDescription("説明");
         task.setDeadline(LocalDate.of(2025, 12, 31));
@@ -93,6 +93,82 @@ public class IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(taskJson))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    public void testCreateTask_ValidationException() throws Exception {
+        TaskPostBody task = new TaskPostBody();
+        task.setDescription("説明");
+        task.setDeadline(LocalDate.of(2025, 12, 31));
+
+        String taskJson = objectMapper.writeValueAsString(task);
+
+        mockMvc.perform(post("/tasks")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(taskJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    public void testUpdateTask_Success() throws Exception {
+        TaskPutBody task = new TaskPutBody();
+        int id = 1;
+        task.setId(id);
+        task.setTitle("update");
+        task.setDescription("説明");
+        task.setDeadline(LocalDate.of(2025, 12, 31));
+        task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
+
+        String taskJson = objectMapper.writeValueAsString(task);
+
+        mockMvc.perform(put("/tasks/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(taskJson))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    public void testUpdateTask_ValidationException() throws Exception {
+        TaskPutBody task = new TaskPutBody();
+        int id = 1;
+        task.setId(id);
+        task.setTitle("");
+        task.setDescription("説明");
+        task.setDeadline(LocalDate.of(2025, 12, 31));
+        task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
+
+        String taskJson = objectMapper.writeValueAsString(task);
+
+        mockMvc.perform(put("/tasks/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(taskJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    public void testUpdateTask_TaskNotExistException() throws Exception {
+        TaskPutBody task = new TaskPutBody();
+        int id = 10;
+        task.setId(id);
+        task.setTitle("どれおん");
+        task.setDescription("説明");
+        task.setDeadline(LocalDate.of(2025, 12, 31));
+        task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
+
+        String taskJson = objectMapper.writeValueAsString(task);
+
+        mockMvc.perform(put("/tasks/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(taskJson))
+                .andExpect(status().isNotFound());
     }
 
     @Test
