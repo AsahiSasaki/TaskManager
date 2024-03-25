@@ -10,8 +10,6 @@ import com.excite.taskmanager.domain.object.TaskObject;
 
 public class TaskValidation {
 
-    public static Object validate;
-
     public static void validate(TaskObject data) throws ValidationException {
         validateTitle(data.getTitle());
         validateDescription(data.getDescription());
