@@ -31,7 +31,7 @@ public class TaskValidation {
             throw new ValidationException("タスク内容は50文字以下で入力してください");
         }
 
-        if (Pattern.compile("[\\x20-\\x7E]").matcher(description).find()) {
+        if (description != null && Pattern.compile("[\\x20-\\x7E]").matcher(description).find()) {
             throw new ValidationException("タスク内容に半角入力は許可されていません");
         }
     }
