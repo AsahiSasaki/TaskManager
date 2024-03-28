@@ -10,6 +10,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -55,132 +56,146 @@ public class IntegrationTest {
 
     }
 
-    @Test
-    public void testGetTasks() throws Exception {
-        mockMvc.perform(get("/tasks"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].title").value("Task1"))
-                .andExpect(jsonPath("$[1].title").value("Task2"))
-                .andExpect(jsonPath("$[2].title").value("Task3"));
+    @Nested
+    class TestGetTasks {
+        @Test
+        public void testGetTasks() throws Exception {
+            mockMvc.perform(get("/tasks"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(3)))
+                    .andExpect(jsonPath("$[0].title").value("Task1"))
+                    .andExpect(jsonPath("$[1].title").value("Task2"))
+                    .andExpect(jsonPath("$[2].title").value("Task3"));
+        }
     }
 
-    @Test
-    public void testGetTaskByID_Success() throws Exception {
-        mockMvc.perform(get("/tasks/3"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value("3"));
+    @Nested
+    class TestGetTaskById {
+        @Test
+        public void testGetTaskByID_Success() throws Exception {
+            mockMvc.perform(get("/tasks/3"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("id").value("3"));
+        }
+
+        @Test
+        public void testGetTaskByID_TaskNotExistException() throws Exception {
+            mockMvc.perform(get("/tasks/617"))
+                    .andExpect(status().isNotFound());
+        }
     }
 
-    @Test
-    public void testGetTaskByID_TaskNotExistException() throws Exception {
-        mockMvc.perform(get("/tasks/617"))
-                .andExpect(status().isNotFound());
+    @Nested
+    class TestCreateTask {
+        @Test
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        public void testCreateTask_Success() throws Exception {
+            TaskPostBody task = new TaskPostBody();
+            task.setTitle("結合テスト");
+            task.setDescription("説明");
+            task.setDeadline(LocalDate.of(2025, 12, 31));
+
+            String taskJson = objectMapper.writeValueAsString(task);
+
+            mockMvc.perform(post("/tasks")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(taskJson))
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        public void testCreateTask_ValidationException() throws Exception {
+            TaskPostBody task = new TaskPostBody();
+            task.setDescription("説明");
+            task.setDeadline(LocalDate.of(2025, 12, 31));
+
+            String taskJson = objectMapper.writeValueAsString(task);
+
+            mockMvc.perform(post("/tasks")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(taskJson))
+                    .andExpect(status().isBadRequest());
+        }
     }
 
-    @Test
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    public void testCreateTask_Success() throws Exception {
-        TaskPostBody task = new TaskPostBody();
-        task.setTitle("結合テスト");
-        task.setDescription("説明");
-        task.setDeadline(LocalDate.of(2025, 12, 31));
+    @Nested
+    class TestUpdateTask {
+        @Test
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        public void testUpdateTask_Success() throws Exception {
+            TaskPutBody task = new TaskPutBody();
+            int id = 1;
+            task.setId(id);
+            task.setTitle("update");
+            task.setDescription("説明");
+            task.setDeadline(LocalDate.of(2025, 12, 31));
+            task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
 
-        String taskJson = objectMapper.writeValueAsString(task);
+            String taskJson = objectMapper.writeValueAsString(task);
 
-        mockMvc.perform(post("/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(taskJson))
-                .andExpect(status().isOk());
+            mockMvc.perform(put("/tasks/" + id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(taskJson))
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        public void testUpdateTask_ValidationException() throws Exception {
+            TaskPutBody task = new TaskPutBody();
+            int id = 1;
+            task.setId(id);
+            task.setTitle("");
+            task.setDescription("説明");
+            task.setDeadline(LocalDate.of(2025, 12, 31));
+            task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
+
+            String taskJson = objectMapper.writeValueAsString(task);
+
+            mockMvc.perform(put("/tasks/" + id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(taskJson))
+                    .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        public void testUpdateTask_TaskNotExistException() throws Exception {
+            TaskPutBody task = new TaskPutBody();
+            int id = 10;
+            task.setId(id);
+            task.setTitle("どれおん");
+            task.setDescription("説明");
+            task.setDeadline(LocalDate.of(2025, 12, 31));
+            task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
+
+            String taskJson = objectMapper.writeValueAsString(task);
+
+            mockMvc.perform(put("/tasks/" + id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(taskJson))
+                    .andExpect(status().isNotFound());
+        }
     }
 
-    @Test
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    public void testCreateTask_ValidationException() throws Exception {
-        TaskPostBody task = new TaskPostBody();
-        task.setDescription("説明");
-        task.setDeadline(LocalDate.of(2025, 12, 31));
+    @Nested
+    class TestDeleteTask {
+        @Test
+        public void testDeleteTask_Success() throws Exception {
+            mockMvc.perform(delete("/tasks/3"))
+                    .andExpect(status().isOk());
+        }
 
-        String taskJson = objectMapper.writeValueAsString(task);
-
-        mockMvc.perform(post("/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(taskJson))
-                .andExpect(status().isBadRequest());
+        @Test
+        public void testDeleteTask_TaskNotExistException() throws Exception {
+            mockMvc.perform(delete("/tasks/48"))
+                    .andExpect(status().isNotFound());
+        }
     }
-
-    @Test
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    public void testUpdateTask_Success() throws Exception {
-        TaskPutBody task = new TaskPutBody();
-        int id = 1;
-        task.setId(id);
-        task.setTitle("update");
-        task.setDescription("説明");
-        task.setDeadline(LocalDate.of(2025, 12, 31));
-        task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
-
-        String taskJson = objectMapper.writeValueAsString(task);
-
-        mockMvc.perform(put("/tasks/" + id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(taskJson))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    public void testUpdateTask_ValidationException() throws Exception {
-        TaskPutBody task = new TaskPutBody();
-        int id = 1;
-        task.setId(id);
-        task.setTitle("");
-        task.setDescription("説明");
-        task.setDeadline(LocalDate.of(2025, 12, 31));
-        task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
-
-        String taskJson = objectMapper.writeValueAsString(task);
-
-        mockMvc.perform(put("/tasks/" + id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(taskJson))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    public void testUpdateTask_TaskNotExistException() throws Exception {
-        TaskPutBody task = new TaskPutBody();
-        int id = 10;
-        task.setId(id);
-        task.setTitle("どれおん");
-        task.setDescription("説明");
-        task.setDeadline(LocalDate.of(2025, 12, 31));
-        task.setStatus(TaskPutBody.StatusEnum.NUMBER_1);
-
-        String taskJson = objectMapper.writeValueAsString(task);
-
-        mockMvc.perform(put("/tasks/" + id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(taskJson))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void testDeleteTask_Success() throws Exception {
-        mockMvc.perform(delete("/tasks/3"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testDeleteTask_TaskNotExistException() throws Exception {
-        mockMvc.perform(delete("/tasks/48"))
-                .andExpect(status().isNotFound());
-    }
-
 }
